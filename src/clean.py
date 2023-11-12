@@ -54,4 +54,4 @@ class OraganizeFiles:
 if __name__ == '__main__':
     org_file = OraganizeFiles('/home/alireza/Downloads')
     org_file()
-    print("Done!")
+    print("Done")
