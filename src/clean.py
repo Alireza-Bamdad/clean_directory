@@ -12,11 +12,8 @@ class OraganizeFiles:
         moving files into directories based on extension.
     """
     
-    def __init__(self, directory):
-        self.directory = Path(directory)
-        if not self.directory.exists():
-            raise FileNotFoundError(f'{self.directory} does not exist')
-        
+    def __init__(self):
+                
         ext_dir = read_json(DATA_DIR / 'extensions.json')
         self.extenstion = {}
         for dir_name, ext_list in ext_dir.items():
@@ -24,12 +21,16 @@ class OraganizeFiles:
                 self.extenstion[ext] = dir_name
 
         # logger.info(f'{self.extenstion}')
-    def __call__(self):
+    def __call__(self, directory):
         """ Organize files in a directory by moving them
             to sub directories based on extension.
         """
         
-        for file_path in self.directory.iterdir():
+        directory = Path(directory)
+        if not directory.exists():
+            raise FileNotFoundError(f'{directory} does not exist')
+        
+        for file_path in directory.iterdir():
             # ignor directoris
             if file_path.is_dir():
                 continue
@@ -40,10 +41,10 @@ class OraganizeFiles:
                 
             # move files
             if file_path.suffix not in self.extenstion:
-                DEST_DIR = self.directory / 'other'
+                DEST_DIR = directory / 'other'
                 
             else:
-                DEST_DIR = self.directory / self.extenstion[file_path.suffix]
+                DEST_DIR = directory / self.extenstion[file_path.suffix]
                 
             DEST_DIR.mkdir(exist_ok=True)
             logger.info(f'moving {file_path} to {DEST_DIR}')
@@ -52,6 +53,6 @@ class OraganizeFiles:
 
 
 if __name__ == '__main__':
-    org_file = OraganizeFiles('/home/alireza/Downloads')
-    org_file()
-    print("Done")
+    org_file = OraganizeFiles()
+    org_file('/home/alireza/Downloads')
+    logger.info("Done")
