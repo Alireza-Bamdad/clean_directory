@@ -1,6 +1,6 @@
-from collections import Counter
-from pathlib import Path
 import shutil
+import sys
+from pathlib import Path
 from src.data import DATA_DIR
 from src.utils.io import read_json
 from loguru import logger
@@ -53,6 +53,6 @@ class OraganizeFiles:
 
 
 if __name__ == '__main__':
-    org_file = OraganizeFiles()
-    org_file('/home/alireza/Downloads')
+    org_files = OraganizeFiles()
+    org_files(sys.argv[1])
     logger.info("Done")
